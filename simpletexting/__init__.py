@@ -2,6 +2,9 @@ import requests
 import xmltodict
 import xml.etree.ElementTree as ET
 
+class ResponseError(Exception):
+    pass
+
 class Client():
 
     def __init__(self, url="https://app2.simpletexting.com/v1/", token=None, session=None):
@@ -19,6 +22,15 @@ class Client():
         url = self.url + dest
         res = self.__make_req(url, headers, request)
         parsed = ET.XML(res.text)
+
+        response = list(xmltodict.parse(ET.tostring(parsed)).items())
+        response = dict(response[0][1])
+
+        errcode = response['code']
+        errtext = response['message']
+        if int(errcode) < 0:
+            raise ResponseError('Received err #{0} : {1}'.format(errcode, errtext))
+
         return parsed
 
     def __make_req(self, url=None, headers=None, data=None):
