@@ -71,14 +71,22 @@ class Client():
     def send_message(self, numbers, message):
         req = {}
         results = []
+
+        if not isinstance(numbers, list) or numbers is None:
+            raise ResponseError("Numbers must be included in a list format")
+
+        if message is None:
+            raise ResponseError("You must include in a message")
+
         dest = 'send/'
+
         for i in numbers:
             req['phone'] = i
             req['message'] = message
             res = self.__request(dest, request=req)
             results.append(xmltodict.parse(ET.tostring(res)))
             #response = dict(response[0][1])
-        #return results
+        return results
 
     def check_message_count(self):
         req = {}
