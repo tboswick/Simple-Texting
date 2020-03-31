@@ -52,9 +52,9 @@ class Client():
             req['phone'] = i
             req['message'] = message
             res = self.__request(dest, request=req)
-            #results.append(xmltodict.parse(ET.tostring(res)))
+            results.append(xmltodict.parse(ET.tostring(res)))
             #response = dict(response[0][1])
-        return results
+        #return results
 
     def check_message_count(self):
         req = {}
@@ -63,3 +63,12 @@ class Client():
         response = list(xmltodict.parse(ET.tostring(res)).items())
         response = dict(response[0][1])
         return response['messagesCount']
+
+    def check_keyword_availability(self, keyword):
+        req = {}
+        dest = 'keyword/check'
+        req['keyword'] = keyword
+        res = self.__request(dest, request=req)
+        response = list(xmltodict.parse(ET.tostring(res)).items())
+        response = dict(response[0][1])
+        return response['message']
