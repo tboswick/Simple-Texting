@@ -37,9 +37,33 @@ class Client():
         res = self.session.post(url,data,headers)
         return res
 
+    def configure_sms_forwarding(self, email=None, url=None, phone=None):
+        req = {}
+        dest = 'forward/setup'
+
+        if email is not None:
+            req['email'] = email
+
+        if email is not None:
+            req['url'] = url
+
+        if email is not None:
+            req['phone'] = phone
+
+        else:
+            raise ResponseError("You must specify an email, url or phone number for forwarding")
+
+        res = self.__request(dest, request=req)
+        return res
+
     def get_contacts(self, group):
         req = {}
+
+        if group is None:
+            raise ResponseError("You must specify an email, url or phone number for forwarding")
+
         req['group'] = group
+
         dest='group/contact/list/'
         res = self.__request(dest, request=req)
         return xmltodict.parse(ET.tostring(res))
@@ -67,6 +91,15 @@ class Client():
     def check_keyword_availability(self, keyword):
         req = {}
         dest = 'keyword/check'
+        req['keyword'] = keyword
+        res = self.__request(dest, request=req)
+        response = list(xmltodict.parse(ET.tostring(res)).items())
+        response = dict(response[0][1])
+        return response['message']
+
+    def rent_keyword(self, keyword):
+        req = {}
+        dest = 'keyword/rent'
         req['keyword'] = keyword
         res = self.__request(dest, request=req)
         response = list(xmltodict.parse(ET.tostring(res)).items())
