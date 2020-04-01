@@ -44,10 +44,10 @@ class Client():
         if email is not None:
             req['email'] = email
 
-        if email is not None:
+        if url is not None:
             req['url'] = url
 
-        if email is not None:
+        if phone is not None:
             req['phone'] = phone
 
         else:
@@ -76,7 +76,7 @@ class Client():
             raise ResponseError("Numbers must be included in a list format")
 
         if message is None:
-            raise ResponseError("You must include in a message")
+            raise ResponseError("You must include a message")
 
         dest = 'send/'
 
@@ -90,26 +90,74 @@ class Client():
 
     def check_message_count(self):
         req = {}
+
         dest = 'messaging/check'
+
         res = self.__request(dest, request=req)
         response = list(xmltodict.parse(ET.tostring(res)).items())
         response = dict(response[0][1])
+
         return response['messagesCount']
 
     def check_keyword_availability(self, keyword):
         req = {}
-        dest = 'keyword/check'
+
+        if keyword is None:
+            raise ResponseError("You must include a keyword")
+
         req['keyword'] = keyword
+
+        dest = 'keyword/check'
+
         res = self.__request(dest, request=req)
         response = list(xmltodict.parse(ET.tostring(res)).items())
         response = dict(response[0][1])
+
         return response['message']
 
     def rent_keyword(self, keyword):
         req = {}
-        dest = 'keyword/rent'
+
+        if keyword is None:
+            raise ResponseError("You must include a keyword")
+
         req['keyword'] = keyword
+
+        dest = 'keyword/rent'
+
         res = self.__request(dest, request=req)
         response = list(xmltodict.parse(ET.tostring(res)).items())
         response = dict(response[0][1])
+
         return response['message']
+
+    def add_contct_to_list(self, group=None, phone=None, firstName=None, lastName=None, email=None, comment=None, birthday=None):
+        req = {}
+        dest = 'group/contact/add'
+
+        if group is not None:
+            req['group'] = group
+
+        if phone is not None:
+            req['phone'] = phone
+
+        if phone is None and group is None:
+            raise ResponseError("You must specify a group and phone number")
+
+        if firstName is not None:
+            req['firstName'] = firstName
+
+        if lastName is not None:
+            req['lastName'] = lastName
+
+        if email is not None:
+            req['email'] = email
+
+        if comment is not None:
+            req['comment'] = comment
+
+        if birthday is not None:
+            req['birthday'] = comment
+
+        res = self.__request(dest, request=req)
+        return res
