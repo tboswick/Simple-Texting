@@ -60,7 +60,7 @@ class Client():
         req = {}
 
         if group is None:
-            raise ResponseError("You must specify an email, url or phone number for forwarding")
+            raise ResponseError("You must specify an group")
 
         req['group'] = group
 
@@ -131,7 +131,7 @@ class Client():
 
         return response['message']
 
-    def add_contct_to_list(self, group=None, phone=None, firstName=None, lastName=None, email=None, comment=None, birthday=None):
+    def add_contact_to_list(self, group=None, phone=None, firstName=None, lastName=None, email=None, comment=None, birthday=None):
         req = {}
         dest = 'group/contact/add'
 
@@ -142,7 +142,7 @@ class Client():
             req['phone'] = phone
 
         if phone is None and group is None:
-            raise ResponseError("You must specify a group and phone number")
+            raise ResponseError("You must specify a group and phone number to add contact")
 
         if firstName is not None:
             req['firstName'] = firstName
@@ -158,6 +158,53 @@ class Client():
 
         if birthday is not None:
             req['birthday'] = comment
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def update_contact(self, phone=None, firstName=None, lastName=None, email=None, comment=None, birthday=None):
+        req = {}
+        dest = 'group/contact/update'
+
+        if phone is not None:
+            req['phone'] = phone
+
+        if phone is None:
+            raise ResponseError("You must specify a phone number to update contact")
+
+        if firstName is not None:
+            req['firstName'] = firstName
+
+        if lastName is not None:
+            req['lastName'] = lastName
+
+        if email is not None:
+            req['email'] = email
+
+        if comment is not None:
+            req['comment'] = comment
+
+        if birthday is not None:
+            req['birthday'] = comment
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def delete_contact(self, id=None,  phone=None, group=None):
+        req = {}
+        dest = 'group/contact/remove'
+
+        if id is not None:
+            req['id'] = phone
+
+        if phone is not None:
+            req['phone'] = phone
+
+        if phone is None and id is None:
+            raise ResponseError("You must specify a phone number or id to delete contact")
+
+        if group is not None:
+            req['group'] = group
 
         res = self.__request(dest, request=req)
         return res
