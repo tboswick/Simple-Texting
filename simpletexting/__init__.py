@@ -190,7 +190,7 @@ class Client():
         res = self.__request(dest, request=req)
         return res
 
-    def delete_contact(self, id=None,  phone=None, group=None):
+    def remove_contact(self, id=None,  phone=None, group=None):
         req = {}
         dest = 'group/contact/remove'
 
@@ -205,6 +205,100 @@ class Client():
 
         if group is not None:
             req['group'] = group
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def add_contact_to_unsubscribe(self, phone=None):
+        req = {}
+        dest = 'contacts/blocklist/add'
+
+        if phone is not None:
+            req['phone'] = phone
+
+        if phone is None:
+            raise ResponseError("You must specify a phone number to add to unsubscribed")
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def remove_contact_from_unsubscribe(self, phone=None):
+        req = {}
+        dest = 'contacts/blocklist/remove'
+
+        if phone is not None:
+            req['phone'] = phone
+
+        if phone is None:
+            raise ResponseError("You must specify a phone number to add to unsubscribed")
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def list_all_sent_camps(self, datefrom=None, dateto=None, date=None):
+        req = {}
+        dest = 'messaging/sent/list'
+
+        if datefrom is not None:
+            req['datefrom'] = phone
+
+        if dateto is not None:
+            req['dateto'] = phone
+
+        if date is not None:
+            req['date'] = phone
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def list_all_scheduled_camps(self):
+        req = {}
+        dest = 'messaging/scheduled/list'
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def show_campaign_info(self, id=None):
+        req = {}
+        dest = 'messaging/message'
+
+        if id is not None:
+            req['id'] = phone
+
+        if id is None:
+            raise ResponseError("You must specify an id to add to show campagin")
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def remove_campaign_by_id(self, id=None):
+        req = {}
+        dest = 'messaging/delete'
+
+        if id is not None:
+            req['id'] = phone
+
+        if id is None:
+            raise ResponseError("You must specify an id to add to show campagin")
+
+        res = self.__request(dest, request=req)
+        return res
+
+    def get_autoresponders_analytics(self, id=None, datefrom=None, dateto=None):
+        req = {}
+        dest = 'analytics/autoresponders'
+
+        if id is not None:
+            req['phone'] = phone
+
+        if datefrom is not None:
+            req['datefrom'] = phone
+
+        if dateto is not None:
+            req['dateto'] = phone
+
+        if id is None or datefrom=None or dateto=None:
+            raise ResponseError("You must specify an id, datefrom and dateto to add to show campagin")
 
         res = self.__request(dest, request=req)
         return res
