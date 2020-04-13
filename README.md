@@ -3,7 +3,7 @@ A Python Module for Simple Texting's API
 
 For more information about the Simple Texting API, please see https://app2.simpletexting.com/account/api
 
-Requirements:
+## Requirements:
   requests
   xmltodict
   
