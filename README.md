@@ -7,9 +7,9 @@ Requirements:
   requests
   xmltodict
   
-# Usage
+## Usage
 
-## Create the client:
+### Create the client:
 
 st = simpletexting.Client(token='your_token')
 
