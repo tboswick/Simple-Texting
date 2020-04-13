@@ -9,9 +9,10 @@ Requirements:
   
 Usage:
 
-Create the client 
+Create the client:
+
 st = simpletexting.Client(token='your_token')
 
-Send Message
+Send Message:
 #send_message(self, numbers, message) - Numbers being the list of numbers to send the message to
 st.send_message(numbers, 'Test1')
