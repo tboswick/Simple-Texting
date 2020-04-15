@@ -230,7 +230,7 @@ class Client():
             req['phone'] = phone
 
         if phone is None:
-            raise ResponseError("You must specify a phone number to add to unsubscribed")
+            raise ResponseError("You must specify a phone number to remove from unsubscribed")
 
         res = self.__request(dest, request=req)
         return res
@@ -240,65 +240,62 @@ class Client():
         dest = 'messaging/sent/list'
 
         if datefrom is not None:
-            req['datefrom'] = phone
+            req['datefrom'] = datefrom
 
         if dateto is not None:
-            req['dateto'] = phone
+            req['dateto'] = dateto
 
         if date is not None:
-            req['date'] = phone
+            req['date'] = date
 
         res = self.__request(dest, request=req)
-        return res
+        return xmltodict.parse(ET.tostring(res))
 
     def list_all_scheduled_camps(self):
         req = {}
         dest = 'messaging/scheduled/list'
 
         res = self.__request(dest, request=req)
-        return res
+        return xmltodict.parse(ET.tostring(res))
 
     def show_campaign_info(self, id=None):
         req = {}
         dest = 'messaging/message'
 
         if id is not None:
-            req['id'] = phone
+            req['id'] = id
 
         if id is None:
-            raise ResponseError("You must specify an id to add to show campagin")
+            raise ResponseError("You must specify an id to show campagin")
 
         res = self.__request(dest, request=req)
-        return res
+        return xmltodict.parse(ET.tostring(res))
 
     def remove_campaign_by_id(self, id=None):
         req = {}
         dest = 'messaging/delete'
 
         if id is not None:
-            req['id'] = phone
+            req['id'] = id
 
         if id is None:
-            raise ResponseError("You must specify an id to add to show campagin")
+            raise ResponseError("You must specify an id to remove a campagin")
 
         res = self.__request(dest, request=req)
         return res
 
-    def get_autoresponders_analytics(self, id=None, datefrom=None, dateto=None):
+    def get_autoresponders_analytics(self, datefrom=None, dateto=None):
         req = {}
         dest = 'analytics/autoresponders'
 
-        if id is not None:
-            req['phone'] = phone
-
         if datefrom is not None:
-            req['datefrom'] = phone
+            req['datefrom'] = datefrom
 
         if dateto is not None:
-            req['dateto'] = phone
+            req['dateto'] = dateto
 
-        if id is None or datefrom=None or dateto=None:
-            raise ResponseError("You must specify an id, datefrom and dateto to add to show campagin")
+        if datefrom is None or dateto is None:
+            raise ResponseError("You must specify a datefrom and dateto to show autoresponder analytics")
 
         res = self.__request(dest, request=req)
-        return res
+        return xmltodict.parse(ET.tostring(res))
